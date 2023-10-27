@@ -1,0 +1,67 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Builder;
+
+class CreateIdentityTraceDevicesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('identity_trace_devices', function (Blueprint $table) {
+            if (Builder::$defaultMorphKeyType === 'uuid') {
+                $table->uuid('id')->primary();
+                $table->uuidMorphs('traceable');
+            } elseif (Builder::$defaultMorphKeyType === 'ulid') {
+                $table->ulid('id')->primary();
+                $table->ulidMorphs('traceable');
+            } else {
+                $table->id();
+                $table->morphs('traceable');
+            }
+
+            $table->string('platform')->nullable();
+            $table->string('platform_version')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('browser_version')->nullable();
+            $table->boolean('is_desktop')->default(0);
+            $table->boolean('is_tablet')->default(0);
+            $table->boolean('is_mobile')->default(0);
+            $table->string('language')->nullable();
+            $table->boolean('is_trusted')->default(0);
+            $table->boolean('is_untrusted')->default(0);
+
+            $table->softDeletes();
+            $table->timestamps();
+
+
+            // Existing Indexes
+            $table->index(['deleted_at'], 'd');
+            $table->index(['platform', 'platform_version'], 'pl_plv');
+            $table->index(['browser', 'browser_version'], 'br_brv');
+            $table->index(['platform', 'browser', 'language'], 'pl_br_la');
+            $table->index(['is_trusted', 'is_untrusted'], 'is_tr_is_un');
+            $table->index(['is_mobile', 'language'], 'is_mo_la');
+
+            // Additional Indexes for traceable
+            $table->index(['traceable_type', 'traceable_id'], 'itt_iti');
+            $table->index(['deleted_at', 'traceable_type', 'traceable_id'], 'd_itt_iti');
+            $table->index(['traceable_type', 'traceable_id', 'platform'], 'itt_iti_pl');
+            $table->index(['traceable_type', 'traceable_id', 'browser'], 'itt_iti_br');
+            $table->index(['deleted_at', 'traceable_type', 'traceable_id', 'platform'], 'd_itt_iti_pl');
+            $table->index(['deleted_at', 'traceable_type', 'traceable_id', 'browser'], 'd_itt_iti_br');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('identity_trace_devices');
+    }
+};

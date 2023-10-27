@@ -1,0 +1,28 @@
+{
+    "name": "davidpuzder/laravel-identity-trace",
+    "description": "Laravel IdentityTrace - Enhance user login security and device management in Laravel applications.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "DavidPuzder",
+            "email": "davidpuzdersps@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "jenssegers/agent": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "DavidPuzder\\LaravelIdentityTrace\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DavidPuzder\\LaravelIdentityTrace\\IdentityTraceServiceProvider"
+            ]
+        }
+    }
+}

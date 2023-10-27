@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Builder;
+
+class CreateIdentityTraceLoginsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('identity_trace_logins', function (Blueprint $table) {
+            if (Builder::$defaultMorphKeyType === 'uuid') {
+                $table->uuid('id')->primary();
+                $table->uuidMorphs('traceable');
+                $table->uuid('device_id')->nullable();
+            } elseif (Builder::$defaultMorphKeyType === 'ulid') {
+                $table->ulid('id')->primary();
+                $table->ulidMorphs('traceable');
+                $table->ulid('device_id')->nullable();
+            } else {
+                $table->id();
+                $table->morphs('traceable');
+                $table->bigInteger('device_id')->nullable();
+            }
+
+            $table->ipAddress()->nullable()->default(null);
+            $table->string('type')->nullable()->default(null);
+
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->index(['deleted_at'], 'da');
+
+            $table->index(['deleted_at', 'ip_address'], 'da_ip');
+            $table->index(['deleted_at', 'device_id'], 'da_di');
+            $table->index(['deleted_at', 'traceable_id', 'traceable_type'], 'da_iti_itt');
+
+            $table->index(['deleted_at', 'type'], 'da_type');
+            $table->index(['deleted_at', 'device_id', 'type'], 'di_type');
+            $table->index(['deleted_at', 'traceable_type', 'traceable_id', 'type'], 'iti_itt_type');
+
+            $table->index(['deleted_at', 'ip_address', 'device_id'], 'da_ip_di');
+            $table->index(['deleted_at', 'ip_address', 'traceable_id', 'traceable_type'], 'da_ip_iti_itt');
+            $table->index(['deleted_at', 'device_id', 'traceable_id', 'traceable_type'], 'da_di_iti_itt');
+
+            $table->index(['deleted_at', 'ip_address', 'device_id', 'traceable_id', 'traceable_type'], 'da_ip_di_iti_itt');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('identity_trace_logins');
+    }
+};
