@@ -9,11 +9,10 @@ class IdentityTraceDeviceCreatedEvent
 {
     use SerializesModels;
 
-    /** @var IdentityTraceDevice $identityTraceDevice */
-    public IdentityTraceDevice $identityTraceDevice;
-
-    public function __construct(IdentityTraceDevice $identityTraceDevice)
+    public function __construct(
+        public IdentityTraceDevice $identityTraceDevice
+    )
     {
-        $this->identityTraceDevice = $identityTraceDevice;
+
     }
 }

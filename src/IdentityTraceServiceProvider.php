@@ -2,7 +2,9 @@
 
 namespace DavidPuzder\LaravelIdentityTrace;
 
-use DavidPuzder\LaravelIdentityTrace\Services\IdentityTraceService;
+use DavidPuzder\LaravelIdentityTrace\Services\IdentityTraceAgentService;
+use DavidPuzder\LaravelIdentityTrace\Services\IdentityTraceDeviceService;
+use DavidPuzder\LaravelIdentityTrace\Services\IdentityTraceLoginService;
 use DavidPuzder\LaravelIdentityTrace\Subscribers\IdentityTraceSubscriber;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
@@ -34,12 +36,9 @@ class IdentityTraceServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(IdentityTraceService::class, function ($app) {
-            return new IdentityTraceService($app, $app['request']);
-        });
-
-        $this->app->alias(IdentityTraceService::class, 'identity-trace-service');
-
         $this->app->register(AgentServiceProvider::class);
+        $this->app->alias(IdentityTraceLoginService::class, 'identity-trace-login-service');
+        $this->app->alias(IdentityTraceDeviceService::class, 'identity-trace-device-service');
+        $this->app->alias(IdentityTraceAgentService::class, 'identity-trace-agent-service');
     }
 }

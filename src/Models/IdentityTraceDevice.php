@@ -2,6 +2,7 @@
 
 namespace DavidPuzder\LaravelIdentityTrace\Models;
 
+use DavidPuzder\LaravelIdentityTrace\Enums\DeviceTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,9 +16,17 @@ class IdentityTraceDevice extends Model
 
     /** @var array $casts */
     protected $casts = [
-        'is_locked' => 'boolean',
-        'is_desktop' => 'boolean',
-        'is_phone' => 'boolean',
+        'platform' => 'string',
+        'platform_version' => 'string',
+        'browser' => 'string',
+        'browser_version' => 'string',
+        'device_type' => DeviceTypeEnum::class,
+        'language' => 'string',
+        'is_trusted' => 'boolean',
+        'is_untrusted' => 'boolean',
+        'deleted_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     /**

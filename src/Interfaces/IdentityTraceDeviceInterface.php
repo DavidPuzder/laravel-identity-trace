@@ -4,7 +4,9 @@ namespace DavidPuzder\LaravelIdentityTrace\Interfaces;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-interface HasIdentityTraceInterface
+interface IdentityTraceDeviceInterface
 {
+    public function devices(): MorphMany;
 
+    public function hasDevices(): bool;
 }
