@@ -5,14 +5,12 @@ namespace DavidPuzder\LaravelIdentityTrace\Services;
 use DavidPuzder\LaravelIdentityTrace\Events\IdentityTraceLoginCreatedEvent;
 use DavidPuzder\LaravelIdentityTrace\Events\IdentityTraceLoginFailedEvent;
 use DavidPuzder\LaravelIdentityTrace\Events\IdentityTraceLoginLockoutEvent;
-use DavidPuzder\LaravelIdentityTrace\Interfaces\HasIdentityTraceInterface;
 use DavidPuzder\LaravelIdentityTrace\Interfaces\IdentityTraceLoginInterface;
 use DavidPuzder\LaravelIdentityTrace\Models\IdentityTraceDevice;
 use DavidPuzder\LaravelIdentityTrace\Models\IdentityTraceLogin;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Jenssegers\Agent\Agent;
 
 class IdentityTraceLoginService {
 
