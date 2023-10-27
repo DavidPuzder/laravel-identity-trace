@@ -37,8 +37,5 @@ class IdentityTraceServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(AgentServiceProvider::class);
-        $this->app->alias(IdentityTraceLoginService::class, 'identity-trace-login-service');
-        $this->app->alias(IdentityTraceDeviceService::class, 'identity-trace-device-service');
-        $this->app->alias(IdentityTraceAgentService::class, 'identity-trace-agent-service');
     }
 }
